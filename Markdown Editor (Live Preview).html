@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Markdown Editor</title>
+
+<style>
+:root{
+  --primary:#2563eb;
+  --light:#f3f4f6;
+}
+
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:'Segoe UI', sans-serif;
+}
+
+body{
+  background:var(--light);
+  height:100vh;
+  display:flex;
+  flex-direction:column;
+}
+
+header{
+  padding:15px;
+  background:var(--primary);
+  color:white;
+  text-align:center;
+}
+
+/* Layout */
+.container{
+  display:flex;
+  flex:1;
+}
+
+/* Editor */
+textarea{
+  width:50%;
+  padding:15px;
+  border:none;
+  outline:none;
+  resize:none;
+  font-size:14px;
+}
+
+/* Preview */
+.preview{
+  width:50%;
+  padding:15px;
+  background:white;
+  overflow:auto;
+}
+
+.preview h1{font-size:24px;}
+.preview h2{font-size:20px;}
+.preview b{font-weight:bold;}
+.preview ul{padding-left:20px;}
+.preview a{color:var(--primary);}
+</style>
+</head>
+
+<body>
+
+<header>
+  <h2>Markdown Editor</h2>
+</header>
+
+<div class="container">
+
+<textarea id="editor" placeholder="Write Markdown here..."></textarea>
+
+<div class="preview" id="preview"></div>
+
+</div>
+
+<script>
+
+const editor = document.getElementById("editor");
+const preview = document.getElementById("preview");
+
+editor.addEventListener("input", updatePreview);
+
+function updatePreview(){
+
+let text = editor.value;
+
+// Basic Markdown parsing
+text = text.replace(/^# (.*$)/gim, "<h1>$1</h1>");
+text = text.replace(/^## (.*$)/gim, "<h2>$1</h2>");
+text = text.replace(/\*\*(.*?)\*\*/gim, "<b>$1</b>");
+text = text.replace(/\*(.*?)\*/gim, "<i>$1</i>");
+text = text.replace(/\[(.*?)\]\((.*?)\)/gim, '<a href="$2" target="_blank">$1</a>');
+text = text.replace(/^\- (.*$)/gim, "<li>$1</li>");
+text = text.replace(/\n/g, "<br>");
+
+preview.innerHTML = text;
+
+}
+
+</script>
+
+</body>
+</html>
